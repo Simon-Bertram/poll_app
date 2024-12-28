@@ -10,7 +10,9 @@ class Question(models.Model):
 
     def was_published_recently(self):
         now = timezone.now()
-        return self.pub_date >= (now - datetime.timedelta(days=1)).timestamp()
+        naive_datetime = datetime.timedelta(days=1)
+        aware_datetime = timezone.make_aware(naive_datetime)
+        return self.pub_date >= (now - aware_datetime)
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
