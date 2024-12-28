@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 import datetime
+import pytz
 
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
@@ -9,10 +10,7 @@ class Question(models.Model):
         return self.question_text
 
     def was_published_recently(self):
-        now = timezone.now()
-        naive_datetime = datetime.timedelta(days=1)
-        aware_datetime = timezone.make_aware(naive_datetime)
-        return self.pub_date >= (now - aware_datetime)
+        return self.pub_date >= (timezone.now() - datetime.timedelta(days=1)).replace(tzinfo=pytz.UTC)
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)

@@ -1,2 +1,2 @@
 Django==5.1.4
-pytz==6
+pytz==release_2024.2
